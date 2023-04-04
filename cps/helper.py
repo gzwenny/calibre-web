@@ -218,9 +218,10 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
+            book_title = book.title + '.' + book_format.lower()
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
             email_text = N_("%(book)s send to eReader", book=link)
-            WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
+            WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name, book_title,
                              config.get_mail_settings(), ereader_mail,
                              email_text, _('This Email has been sent via Calibre-Web.')))
             return
